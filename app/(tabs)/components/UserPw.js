@@ -1,42 +1,40 @@
-import React from 'react';
-import { View, StyleSheet, TextInput } from 'react-native';
+import { useState } from 'react';
+import { KeyboardAvoidingView, StyleSheet, TextInput, Platform } from 'react-native';
+import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 
-export default function UserPw() {
+export default function UserPw({user, password, setUser, setPassword}) {
+    const auth = FIREBASE_AUTH;
+
     return (
-        <View>
-            <TextInput
-                    style = {styles.input1}
-                    placeholder = "Username"
-                    />
-            <TextInput
-                    style = {styles.input2}
-                    placeholder = "Password"
-                    /> 
-        </View>
+      <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}> 
+        {/* Adjusts text inputs so it's not blocked by keyboard */}
+        <TextInput
+            style = {styles.input}
+            placeholder = "Username"
+            value = {user}
+            onChangeText = {setUser}
+            />
+        <TextInput
+            style = {styles.input}
+            placeholder = "Password"
+            value = {password}
+            onChangeText = {setPassword}
+            secureTextEntry = {true}
+            /> 
+      </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
-
-  input1: {
+  input: {
     marginTop: 10,
-    paddingHorizontal: 70,
     paddingVertical: 2,
     borderWidth: 1,
     borderColor: "#000",
     borderRadius: 5,
     fontSize: 16,
-  
-  },
-  input2: {
-    marginTop: 10,
-    paddingHorizontal: 70,
-    paddingVertical: 2,
-    borderWidth: 1,
-    borderColor: "#000",
-    borderRadius: 5,
-    fontSize: 16,
-  },
-  
+    width: 250,
+  },  
   });
   

@@ -1,17 +1,20 @@
 
-import React from 'react';
+import { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import UserPw from './components/UserPw';
 import SignUpButton from './components/SignUp'
 import LogIn from './components/LogIn'
 
-export default function Index({navigation}) {
+export default function Index({ navigation }) {
+    const [user, setUser] = useState('');
+    const [password, setPassword] = useState('');
+  
     return (
       <View style={styles.container}>
         <Text style={styles.register}>Register</Text>
         <Text style={styles.text}>Create your new account</Text>
-        <UserPw/>
-        <SignUpButton/>
+        <UserPw user={user} password={password} setUser={setUser} setPassword={setPassword}/>
+        <SignUpButton navigation={navigation} user={user} password={password}/>
         <Text style={styles.text1}>OR</Text>
         <Text>Already have an Account? <LogIn navigation={navigation}/> </Text>
       </View>
