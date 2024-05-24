@@ -29,6 +29,7 @@ export default function UserPw({user, password, setUser, setPassword}) {
 const styles = StyleSheet.create({
   input: {
     marginTop: 10,
+    paddingLeft: 10,
     paddingVertical: 2,
     borderWidth: 1,
     borderColor: "#000",
