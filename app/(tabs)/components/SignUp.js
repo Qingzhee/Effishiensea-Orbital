@@ -1,27 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import SuccessAlert from './SuccessAlert'; // Adjust the import path as necessary
 
 export default function SignUpButton({ navigation, user, password }) {
+  const [isSuccess, setIsSuccess] = useState(false);
   const auth = FIREBASE_AUTH;
+
   const signUp = async () => {
     try {
       const response = await createUserWithEmailAndPassword(auth, user, password);
-      navigation.navigate('Home');
+      setIsSuccess(true);
     } catch (error) {
       console.error(error);
       alert("Sign up failed: " + error.message);
     }
-  }
+  };
+
+  const handleContinue = () => {
+    setIsSuccess(false);
+    navigation.navigate('Login');
+  };
 
   return (
     <View style={styles.loginContainer}>
-      <TouchableOpacity 
-      style={styles.button}
-      onPress={signUp}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
+      {isSuccess ? (
+        <SuccessAlert onContinue={handleContinue} />
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={signUp}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
