@@ -26,7 +26,7 @@ export default function SignUpButton({ navigation, user, password }) {
   return (
     <View style={styles.loginContainer}>
       {isSuccess ? (
-        <SuccessAlert onContinue={handleContinue} />
+        <SuccessAlert onContinue={handleContinue} message="Congratulations, your account has been successfully created."/>
       ) : (
         <TouchableOpacity style={styles.button} onPress={signUp}>
           <Text style={styles.buttonText}>Sign Up</Text>

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Text, View, StyleSheet, Image, TextInput, Button } from 'react-native';
-import UserPw from './components/UserPw';
+import UserTextbox from './components/UserTextbox';
+import PwTextbox from './components/PwTextbox';
 import LoginButton from './components/LoginButton';
 import RememberMe from './components/RememberMe';
 import CreateAccount from './components/CreateAccount';
+import ForgotYourPassword from './components/ForgotYourPassword';
 const logoImg = require('./components/Logo.png');
 
 export default function Index({ navigation }) {
@@ -15,11 +17,13 @@ export default function Index({ navigation }) {
       <Image source={logoImg} style={styles.logo} />
       <Text style={styles.welcomeText}>Welcome Back</Text>
       <Text style = {styles.login}>Log into your account</Text>
-      <UserPw user={user} password={password} setUser={setUser} setPassword={setPassword}/>
+      <UserTextbox user={user} setUser={setUser} />
+      <PwTextbox password={password} setPassword={setPassword}/>
       <RememberMe/>
       <LoginButton navigation={navigation} user={user} password={password} />
       <Text style = {styles.login}>OR</Text>
       <Text>Dont have an Account? <CreateAccount navigation={navigation}/> </Text> 
+      <ForgotYourPassword navigation={navigation} />
     </View>
   );
 }

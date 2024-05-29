@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, TextInput, Platform } from 'react-native';
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 
-export default function UserPw({user, password, setUser, setPassword}) {
+export default function UserPw({user, setUser}) {
     const auth = FIREBASE_AUTH;
 
     return (
@@ -15,13 +15,6 @@ export default function UserPw({user, password, setUser, setPassword}) {
             value = {user}
             onChangeText = {setUser}
             />
-        <TextInput
-            style = {styles.input}
-            placeholder = "Password"
-            value = {password}
-            onChangeText = {setPassword}
-            secureTextEntry = {true}
-            /> 
       </KeyboardAvoidingView>
     )
 }

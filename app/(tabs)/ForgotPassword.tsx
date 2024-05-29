@@ -1,27 +1,25 @@
 import { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import UserTextbox from './components/UserTextbox';
-import PwTextbox from './components/PwTextbox';
-import SignUpButton from './components/SignUp'
-import LogIn from './components/LogIn'
-import ForgotYourPassword from './components/ForgotYourPassword';
+import SendEmail from './components/SendEmailButton';
+import LogIn from './components/LogIn';
+import CreateAccount from './components/CreateAccount';
 
-export default function Index({ navigation }) {
+export default function ForgotPassword({ navigation}) {
     const [user, setUser] = useState('');
-    const [password, setPassword] = useState('');
-  
+
     return (
       <View style={styles.container}>
-        <Text style={styles.register}>Register</Text>
-        <Text style={styles.text}>Create your new account</Text>
+        <Text style={styles.forgot}>Forgot your password?</Text>
+        <Text style={styles.text}>Enter your email</Text>
         <UserTextbox user={user} setUser={setUser} />
-        <PwTextbox password={password} setPassword={setPassword}/>
-        <SignUpButton navigation={navigation} user={user} password={password}/>
+        <SendEmail navigation={navigation} user={user} />
         <Text style={styles.text1}>OR</Text>
         <Text>Already have an Account? <LogIn navigation={navigation}/> </Text>
-        <ForgotYourPassword navigation={navigation} />
+        <Text>Dont have an Account? <CreateAccount navigation={navigation}/> </Text> 
       </View>
     );
+
 }
 
 const styles = StyleSheet.create({
@@ -30,7 +28,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
-    register: {
+    forgot: {
         fontSize: 35, 
         color: '#000', 
         fontWeight: 'bold',
@@ -46,5 +44,3 @@ const styles = StyleSheet.create({
     },
   
   });
-  
-

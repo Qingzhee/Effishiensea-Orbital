@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-export default function SuccessAlert({ onContinue }) {
+export default function SuccessAlert({ onContinue, message }) {
   return (
     <View style={styles.container}>
       <View style={styles.alertBox}>
@@ -11,7 +11,7 @@ export default function SuccessAlert({ onContinue }) {
         />
         <Text style={styles.successText}>SUCCESS</Text>
         <Text style={styles.messageText}>
-          Congratulations, your account has been successfully created.
+          {message}
         </Text>
         <TouchableOpacity style={styles.button} onPress={onContinue}>
           <Text style={styles.buttonText}>Continue</Text>
