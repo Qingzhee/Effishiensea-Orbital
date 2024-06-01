@@ -8,7 +8,7 @@ export default function LoginButton({ navigation, user, password }) {
   const signIn = async () => {
     try {
       const response = await signInWithEmailAndPassword(auth, user, password);
-      navigation.navigate('Home');
+      navigation.navigate('Screens');
     } catch (error) {
       console.error(error);
       alert("Sign in failed: " + error.message);
