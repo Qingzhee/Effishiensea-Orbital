@@ -1,5 +1,5 @@
 import { KeyboardAvoidingView, StyleSheet, TextInput, Platform, TouchableOpacity, ImageBackground } from 'react-native';
-import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
 import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
 

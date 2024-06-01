@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginButton({ navigation, user, password }) {

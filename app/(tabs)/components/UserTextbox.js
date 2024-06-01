@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, TextInput, Platform } from 'react-native';
-import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
 
 export default function UserPw({user, setUser}) {
     const auth = FIREBASE_AUTH;

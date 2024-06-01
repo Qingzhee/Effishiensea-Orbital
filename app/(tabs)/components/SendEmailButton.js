@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
 import SuccessAlert from './SuccessAlert';
 import { sendPasswordResetEmail } from 'firebase/auth';
 
