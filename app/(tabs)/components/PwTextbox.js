@@ -1,8 +1,11 @@
-import { KeyboardAvoidingView, StyleSheet, TextInput, Platform } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, TextInput, Platform, TouchableOpacity, ImageBackground } from 'react-native';
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { useState } from 'react';
+import { Entypo } from '@expo/vector-icons';
 
 export default function Password({password, setPassword}) {
     const auth = FIREBASE_AUTH;
+    const [hidePassword, setHidePassword] = useState(true);
 
     return (
       <KeyboardAvoidingView 
@@ -13,8 +16,13 @@ export default function Password({password, setPassword}) {
             placeholder = "Password"
             value = {password}
             onChangeText = {setPassword}
-            secureTextEntry = {true}
+            secureTextEntry = {hidePassword}
             /> 
+            <TouchableOpacity 
+              style={styles.icon}
+              onPress={() => setHidePassword(!hidePassword)}>
+            <Entypo name={hidePassword ? 'eye' : 'eye-with-line'} size={20} color="black" />
+          </TouchableOpacity>
       </KeyboardAvoidingView>
     )
 }
@@ -31,4 +39,10 @@ const styles = StyleSheet.create({
       fontSize: 16,
       width: 250,
     },  
-    });
+
+    icon: {
+      position: 'absolute',
+      right: 10,
+      top: 15,
+    },
+});
