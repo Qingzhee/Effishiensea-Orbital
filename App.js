@@ -10,6 +10,7 @@ import ForgotPassword from "./app/(tabs)/ForgotPassword.tsx";
 import Aquarium from "./app/(tabs)/Aquarium.tsx";
 import Friends from "./app/(tabs)/FriendsPage.tsx";
 import Gacha from "./app/(tabs)/GachaPage.tsx";
+import Settings from './app/(tabs)/SettingsPage.tsx';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -22,6 +23,7 @@ function ScreensDrawer() {
       <Drawer.Screen name="Aquarium" component={Aquarium}/>
       <Drawer.Screen name="Gacha" component={Gacha} />
       <Drawer.Screen name="Friends" component={Friends} />
+      <Drawer.Screen name="Settings" component={Settings} />
     </Drawer.Navigator>
   );
 }
