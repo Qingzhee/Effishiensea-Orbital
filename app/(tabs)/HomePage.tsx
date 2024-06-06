@@ -28,7 +28,21 @@ export default function HomePage() {
       setTimeLeft((prevTimeLeft) => {
         if (prevTimeLeft <= 1) {
           clearInterval(timerRef.current!);
-          setIsRunning(false);
+          Alert.alert(
+            "Congratulations!",
+            "You've completed your focus session!",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  setIsRunning(false);
+                  setHasStarted(false);
+                  setTimeLeft(time * 60);
+                }
+              }
+            ],
+            { cancelable: false }
+          );
           return 0;
         }
         return prevTimeLeft - 1;
