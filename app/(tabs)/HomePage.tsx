@@ -86,7 +86,9 @@ export default function HomePage() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Start your study session!</Text>
+      <Text style={styles.welcomeText}>
+        {hasStarted ? 'Focus Session in Progress!' : 'Start your focus session!'}
+      </Text>
 
       <View style={styles.timerContainer}>
         <Image source={require('./components/Shark.png')} style={styles.image} />
