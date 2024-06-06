@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Slider from '@react-native-community/slider';
 import getUser from './../Firebase/Firestore';
 import { FIREBASE_AUTH } from './../Firebase/FirebaseConfig';
@@ -7,18 +7,81 @@ import { FIREBASE_AUTH } from './../Firebase/FirebaseConfig';
 export default function HomePage() {
   // State for the timer
   const [time, setTime] = useState<number>(10); // default 10 minutes
+  const [timeLeft, setTimeLeft] = useState<number>(time * 60); // time in seconds
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [hasStarted, setHasStarted] = useState<boolean>(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Function to format time
-  const formatTime = (minutes: number): string => {
-    const hrs = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:00`;
+  const formatTime = (seconds: number): string => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Dummy debugging code, can be deleted and moved around
+  // Function to start the timer
+  const handleStart = () => {
+    setHasStarted(true);
+    setIsRunning(true);
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prevTimeLeft) => {
+        if (prevTimeLeft <= 1) {
+          clearInterval(timerRef.current!);
+          setIsRunning(false);
+          return 0;
+        }
+        return prevTimeLeft - 1;
+      });
+    }, 1000);
+  };
+
+  // Function to stop the timer with confirmation
+  const handleStop = () => {
+    Alert.alert(
+      "Confirm Stop",
+      "Are you sure you want to stop the timer?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Stop",
+          onPress: () => {
+            if (timerRef.current) {
+              clearInterval(timerRef.current);
+            }
+            setIsRunning(false);
+            setHasStarted(false);
+            setTimeLeft(time * 60);
+          },
+          style: "destructive"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  // Effect to reset timeLeft when the slider changes
+  useEffect(() => {
+    if (!hasStarted) {
+      setTimeLeft(time * 60);
+    }
+  }, [time]);
+
   // Get the current user's data from Firestore on opening the Home Page
   useEffect(() => {
-    getUser({ userEmail: FIREBASE_AUTH.currentUser.email });
+    getUser({ userEmail: FIREBASE_AUTH.currentUser?.email });
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -27,25 +90,34 @@ export default function HomePage() {
 
       <View style={styles.timerContainer}>
         <Image source={require('./components/Shark.png')} style={styles.image} />
-        <Text style={styles.timer}>{formatTime(time)}</Text>
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={120}
-          step={1}
-          value={time}
-          onValueChange={setTime}
-          minimumTrackTintColor="#1067c8"
-          maximumTrackTintColor="#D3D3D3"
-          thumbTintColor="#1067c8"
-        />
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonText}>Start</Text>
-        </TouchableOpacity>
+        <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
+        {!hasStarted && (
+          <Slider
+            style={styles.slider}
+            minimumValue={0}
+            maximumValue={120}
+            step={1}
+            value={time}
+            onValueChange={setTime}
+            minimumTrackTintColor="#1067c8"
+            maximumTrackTintColor="#D3D3D3"
+            thumbTintColor="#1067c8"
+          />
+        )}
+        {hasStarted && (
+          <TouchableOpacity style={styles.button} onPress={handleStop}>
+            <Text style={styles.buttonText}>Stop</Text>
+          </TouchableOpacity>
+        )}
+        {!hasStarted && (
+          <TouchableOpacity style={styles.button} onPress={handleStart}>
+            <Text style={styles.buttonText}>Start</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
