@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
+import { FIREBASE_AUTH, FIREBASE_DB } from '../../Firebase/FirebaseConfig';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import SuccessAlert from './SuccessAlert'; // Adjust the import path as necessary
 
 export default function SignUpButton({ navigation, user, password }) {
@@ -11,10 +12,15 @@ export default function SignUpButton({ navigation, user, password }) {
   const signUp = async () => {
     try {
       const response = await createUserWithEmailAndPassword(auth, user, password);
+      const userRef = doc(FIREBASE_DB, 'Users', response.user.uid);
+      await setDoc(userRef, {
+        email: user,
+        tokens: 0,
+      });
       setIsSuccess(true);
     } catch (error) {
       console.error(error);
-      alert("Sign up failed: " + error.message);
+      alert('Sign up failed: ' + error.message);
     }
   };
 
@@ -26,7 +32,7 @@ export default function SignUpButton({ navigation, user, password }) {
   return (
     <View style={styles.loginContainer}>
       {isSuccess ? (
-        <SuccessAlert onContinue={handleContinue} message="Congratulations, your account has been successfully created."/>
+        <SuccessAlert onContinue={handleContinue} message="Congratulations, your account has been successfully created." />
       ) : (
         <TouchableOpacity style={styles.button} onPress={signUp}>
           <Text style={styles.buttonText}>Sign Up</Text>
