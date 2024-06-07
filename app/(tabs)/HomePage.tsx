@@ -71,7 +71,7 @@ export default function HomePage() {
           }
           return 0;
         }
-        return prevTimeLeft - 60; // Decrement by 60 seconds each interval
+        return prevTimeLeft - 1; // Decrement by 60 seconds each interval
       });
     }, 1000); // Set interval to 1 second
   };
