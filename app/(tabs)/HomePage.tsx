@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Slider from '@react-native-community/slider';
-import getUser from './../Firebase/Firestore';
-import { FIREBASE_AUTH } from './../Firebase/FirebaseConfig';
+import { FIREBASE_AUTH, FIREBASE_DB } from './../Firebase/FirebaseConfig';
+import { collection, query, where, getDocs, doc, updateDoc, increment } from 'firebase/firestore';
 
 export default function HomePage() {
   // State for the timer
@@ -28,26 +28,52 @@ export default function HomePage() {
       setTimeLeft((prevTimeLeft) => {
         if (prevTimeLeft <= 1) {
           clearInterval(timerRef.current!);
-          Alert.alert(
-            "Congratulations!",
-            "You've completed your focus session!",
-            [
-              {
-                text: "OK",
-                onPress: () => {
-                  setIsRunning(false);
-                  setHasStarted(false);
-                  setTimeLeft(time * 60);
-                }
+          // Update Firebase with the number of tokens
+          const userEmail = FIREBASE_AUTH.currentUser?.email;
+          if (userEmail) {
+            const usersRef = collection(FIREBASE_DB, 'Users');
+            const q = query(usersRef, where('email', '==', userEmail));
+            getDocs(q).then((querySnapshot) => {
+              if (!querySnapshot.empty) {
+                const userDoc = querySnapshot.docs[0]; // Assume there is only one document per user email
+                const userDocRef = doc(FIREBASE_DB, 'Users', userDoc.id);
+                updateDoc(userDocRef, {
+                  tokens: increment(time)
+                })
+                  .then(() => {
+                    Alert.alert(
+                      "Congratulations!",
+                      "You've completed your focus session and earned tokens!",
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            setIsRunning(false);
+                            setHasStarted(false);
+                            setTimeLeft(time * 60);
+                          }
+                        }
+                      ],
+                      { cancelable: false }
+                    );
+                  })
+                  .catch((error) => {
+                    console.error('Error updating tokens:', error); // Debugging line
+                    Alert.alert("Error", "There was an error updating your tokens.");
+                  });
+              } else {
+                Alert.alert("Error", "No user document found.");
               }
-            ],
-            { cancelable: false }
-          );
+            }).catch((error) => {
+              console.error('Error getting documents:', error); // Debugging line
+              Alert.alert("Error", "There was an error checking your document.");
+            });
+          }
           return 0;
         }
-        return prevTimeLeft - 1;
+        return prevTimeLeft - 60; // Decrement by 60 seconds each interval
       });
-    }, 1000);
+    }, 1000); // Set interval to 1 second
   };
 
   // Function to stop the timer with confirmation
@@ -83,11 +109,6 @@ export default function HomePage() {
       setTimeLeft(time * 60);
     }
   }, [time]);
-
-  // Get the current user's data from Firestore on opening the Home Page
-  useEffect(() => {
-    getUser({ userEmail: FIREBASE_AUTH.currentUser?.email });
-  }, []);
 
   // Cleanup on unmount
   useEffect(() => {
