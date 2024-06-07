@@ -73,7 +73,7 @@ export default function HomePage() {
         }
         return prevTimeLeft - 1; // Decrement by 60 seconds each interval
       });
-    }, 1000); // Set interval to 1 second
+    }, 1000); // Set interval to 1 second (smaller faster)
   };
 
   // Function to stop the timer with confirmation
