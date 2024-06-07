@@ -107,10 +107,14 @@ export default function HomePage() {
       <View style={styles.timerContainer}>
         <Image source={require('./components/Shark.png')} style={styles.image} />
         <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
+        <View style={styles.tokenContainer}>
+          <Image source={require('./components/Token.png')} style={styles.tokenIcon} />
+          <Text style={styles.tokenText}>{time} Tokens</Text>
+        </View>
         {!hasStarted && (
           <Slider
             style={styles.slider}
-            minimumValue={0}
+            minimumValue={1}
             maximumValue={120}
             step={1}
             value={time}
@@ -173,6 +177,19 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  tokenContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tokenIcon: {
+    width: 35,
+    height: 35,
+    marginRight: 5,
+  },
+  tokenText: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   slider: {
     width: '100%',
