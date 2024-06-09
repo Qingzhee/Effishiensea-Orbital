@@ -6,7 +6,7 @@ import LoginButton from './components/LoginButton';
 import RememberMe from './components/RememberMe';
 import CreateAccount from './components/CreateAccount';
 import ForgotYourPassword from './components/ForgotYourPassword';
-const logoImg = require('./components/Logo.png');
+const logoImg = require('../../assets/Logo.png');
 
 export default function Index({ navigation }) {
   const [user, setUser] = useState('');

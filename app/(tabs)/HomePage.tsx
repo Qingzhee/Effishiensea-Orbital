@@ -126,10 +126,10 @@ export default function HomePage() {
       </Text>
 
       <View style={styles.timerContainer}>
-        <Image source={require('./components/Shark.png')} style={styles.image} />
+        <Image source={require('../../assets/Shark.png')} style={styles.image} />
         <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
         <View style={styles.tokenContainer}>
-          <Image source={require('./components/Token.png')} style={styles.tokenIcon} />
+          <Image source={require('../../assets/Token.png')} style={styles.tokenIcon} />
           <Text style={styles.tokenText}>{time} Tokens</Text>
         </View>
         {!hasStarted && (
