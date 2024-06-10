@@ -3,11 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
-export default function LoginButton({ navigation, user, password }) {
+export default function LoginButton({ navigation, email, password }) {
   const auth = FIREBASE_AUTH;
+
   const signIn = async () => {
     try {
-      const response = await signInWithEmailAndPassword(auth, user, password);
+      const response = await signInWithEmailAndPassword(auth, email, password);
       navigation.navigate('Screens');
     } catch (error) {
       console.error(error);
@@ -18,8 +19,8 @@ export default function LoginButton({ navigation, user, password }) {
   return (
     <View style={styles.loginContainer}>
       <TouchableOpacity 
-      style={styles.button} 
-      onPress={signIn}>
+        style={styles.button} 
+        onPress={signIn}>
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
     </View>

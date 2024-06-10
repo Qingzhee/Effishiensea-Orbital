@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import UserTextbox from './components/UserTextbox';
+import UserTextbox from './components/UsernameTextbox';
 import SendEmail from './components/SendEmailButton';
 import LogIn from './components/LogIn';
 import CreateAccount from './components/CreateAccount';

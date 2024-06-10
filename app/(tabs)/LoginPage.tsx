@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Text, View, StyleSheet, Image, TextInput, Button } from 'react-native';
-import UserTextbox from './components/UserTextbox';
+import { Text, View, StyleSheet, Image } from 'react-native';
+import EmailTextbox from './components/EmailTextbox';
 import PwTextbox from './components/PwTextbox';
 import LoginButton from './components/LoginButton';
 import RememberMe from './components/RememberMe';
@@ -8,21 +8,21 @@ import CreateAccount from './components/CreateAccount';
 import ForgotYourPassword from './components/ForgotYourPassword';
 const logoImg = require('../../assets/Logo.png');
 
-export default function Index({ navigation }) {
-  const [user, setUser] = useState('');
+export default function Login({ navigation }) {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
     <View style={styles.container}>
       <Image source={logoImg} style={styles.logo} />
       <Text style={styles.welcomeText}>Welcome Back</Text>
-      <Text style = {styles.login}>Log into your account</Text>
-      <UserTextbox user={user} setUser={setUser} />
+      <Text style={styles.login}>Log into your account</Text>
+      <EmailTextbox email={email} setEmail={setEmail} />
       <PwTextbox password={password} setPassword={setPassword}/>
       <RememberMe/>
-      <LoginButton navigation={navigation} user={user} password={password} />
-      <Text style = {styles.login}>OR</Text>
-      <Text>Dont have an Account? <CreateAccount navigation={navigation}/> </Text> 
+      <LoginButton navigation={navigation} email={email} password={password} />
+      <Text style={styles.login}>OR</Text>
+      <Text>Don't have an Account? <CreateAccount navigation={navigation}/> </Text>
       <ForgotYourPassword navigation={navigation} />
     </View>
   );
@@ -36,21 +36,18 @@ const styles = StyleSheet.create({
     marginBottom: 50
   },
   logo: {
-    width: 450, // Set the desired width
-    height: 450, // Set the desired height
-    resizeMode: 'contain', // Ensure the image scales properly
+    width: 450,
+    height: 450,
+    resizeMode: 'contain',
     marginLeft: 20,
   },
   welcomeText: {
-    fontSize: 35, // Optional: set a font size
-    color: '#000', // Optional: set a text color
+    fontSize: 35,
+    color: '#000',
     fontWeight: 'bold',
     marginTop: -80,
-    
   },
-  login:{
+  login: {
     fontSize: 20,
   },
-
-
 });
