@@ -4,7 +4,7 @@ import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
 import SuccessAlert from './SuccessAlert';
 import { sendPasswordResetEmail } from 'firebase/auth';
 
-export default function SendEmailButton({ navigation, user }) {
+export default function SendEmailButton({ navigation, email }) {
   const [isSuccess, setIsSuccess] = useState(false);
   const auth = FIREBASE_AUTH;
 
@@ -15,18 +15,18 @@ export default function SendEmailButton({ navigation, user }) {
 
   const changePw = async () => {
     try {
-      const response = await sendPasswordResetEmail(auth, user).then(() => {setIsSuccess(true)} );
+      await sendPasswordResetEmail(auth, email);
+      setIsSuccess(true);
     } catch (error) {
       console.error(error);
-      alert("Sign up failed: " + error.message);
+      alert("Password reset failed: " + error.message);
     }
   };
-
 
   return (
     <View style={styles.loginContainer}>
       {isSuccess ? (
-        <SuccessAlert onContinue={handleContinue} message="Password reset! If your email is in our database, you will receive an email shortly!"/>
+        <SuccessAlert onContinue={handleContinue} message="Password reset! If your email is in our database, you will receive an email shortly!" />
       ) : (
         <TouchableOpacity style={styles.button} onPress={changePw}>
           <Text style={styles.buttonText}>Send Email</Text>
