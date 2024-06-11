@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { FIREBASE_AUTH, FIREBASE_DB } from './../Firebase/FirebaseConfig';
-import { collection, getDocs, query, where, updateDoc, doc, arrayUnion } from 'firebase/firestore';
+import { collection, getDocs, query, where, updateDoc, doc, addDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -63,23 +63,25 @@ const Gacha = ({ navigation }) => {
       try {
         const newTokens = tokens - requiredTokens;
         setTokens(newTokens);
-
+  
         // Select a random fish
         const randomFishName = getRandomFish(tier);
-
-        // Create a new fish object with a unique ID
+  
+        // Create a new fish object
         const newFish = {
-          id: generateUniqueId(),
-          name: randomFishName,
+          type: randomFishName,
         };
-
-        // Update Firestore with the new token count and add the fish to the user's collection
+  
+        // Update Firestore with the new token count
         const userDocRef = doc(FIREBASE_DB, 'Users', userDocId);
         await updateDoc(userDocRef, {
           tokens: newTokens,
-          fishes: arrayUnion(newFish),
         });
-
+  
+        // Add the new fish to the "Fishes" collection under the user's document
+        const fishesCollectionRef = collection(userDocRef, 'Fishes');
+        await addDoc(fishesCollectionRef, newFish);
+  
         Alert.alert('Success', `You have spent ${requiredTokens} tokens and received a fish!`);
       } catch (error) {
         console.error('Error updating tokens: ', error);
@@ -89,6 +91,8 @@ const Gacha = ({ navigation }) => {
       Alert.alert('Not enough tokens', `You need ${requiredTokens} tokens but you only have ${tokens}.`);
     }
   };
+  
+  
 
   const renderTierContent = () => {
     switch (selectedTier) {
@@ -223,13 +227,12 @@ const styles = StyleSheet.create({
   tokenIcon: {
     width: 50,
     height: 50,
-    marginRight: 1, 
     marginTop: 5,
   },
   tokenText: {
     color: 'white',
     fontSize: 30,
-    marginRight: 10
+    marginRight: 10,
   },
   tier: {
     fontSize: 30,
