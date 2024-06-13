@@ -7,10 +7,10 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useFocusEffect } from '@react-navigation/native';
 
 const fishDict = {
-  "Tier1": ["fish1", "fish2", "fish3", "fish4", "clownfish", "bluetang", "fish7"],
-  "Tier2": ["morayeel", "lionfish", "jellyfish", "pufferfish", "spidercrab", "lobster"],
-  "Tier3": ["sunkenship", "log", "submarine", "castle", "seaweed", "braincoral", "redcoral", "pinkcoral"],
-  "Tier4": ["whale", "orca", "bluemarlin", "mantaray", "lemonshark", "sidewaysfish", "greatwhite"],
+  "tier1": ["fish1", "fish2", "fish3", "fish4", "clownfish", "bluetang", "fish7"],
+  "tier2": ["morayeel", "lionfish", "jellyfish", "pufferfish", "spidercrab", "lobster"],
+  "tier3": ["sunkenship", "log", "submarine", "castle", "seaweed", "braincoral", "redcoral", "pinkcoral"],
+  "tier4": ["whale", "orca", "bluemarlin", "mantaray", "lemonshark", "sidewaysfish", "greatwhite"],
 };
 
 const getRandomFish = (tier) => {
@@ -24,7 +24,7 @@ const generateUniqueId = () => {
 };
 
 const Gacha = ({ navigation }) => {
-  const [selectedTier, setSelectedTier] = useState('Tier1');
+  const [selectedTier, setSelectedTier] = useState('tier1');
   const [tokens, setTokens] = useState(0);
   const [userDocId, setUserDocId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
@@ -70,6 +70,7 @@ const Gacha = ({ navigation }) => {
         // Create a new fish object
         const newFish = {
           type: randomFishName,
+          tier: tier,
         };
   
         // Update Firestore with the new token count
@@ -100,7 +101,7 @@ const Gacha = ({ navigation }) => {
         return (
           <View style={styles.content}>
             <Image source={require('../../assets/gacha.png')} style={styles.tierImage} />
-            <TouchableOpacity style={styles.tokenButton} onPress={() => handlePress(100, 'Tier1')}>
+            <TouchableOpacity style={styles.tokenButton} onPress={() => handlePress(100, 'tier1')}>
               <View style={styles.tokenContainer}>
                 <Image source={require('../../assets/Token.png')} style={styles.tokenIcon} />
                 <Text style={styles.tokenText}>100</Text>
@@ -112,7 +113,7 @@ const Gacha = ({ navigation }) => {
         return (
           <View style={styles.content}>
             <Image source={require('../../assets/gacha.png')} style={styles.tierImage} />
-            <TouchableOpacity style={styles.tokenButton} onPress={() => handlePress(300, 'Tier2')}>
+            <TouchableOpacity style={styles.tokenButton} onPress={() => handlePress(300, 'tier2')}>
               <View style={styles.tokenContainer}>
                 <Image source={require('../../assets/Token.png')} style={styles.tokenIcon} />
                 <Text style={styles.tokenText}>300</Text>
@@ -124,7 +125,7 @@ const Gacha = ({ navigation }) => {
         return (
           <View style={styles.content}>
             <Image source={require('../../assets/gacha.png')} style={styles.tierImage} />
-            <TouchableOpacity style={styles.tokenButton} onPress={() => handlePress(500, 'Tier3')}>
+            <TouchableOpacity style={styles.tokenButton} onPress={() => handlePress(500, 'tier3')}>
               <View style={styles.tokenContainer}>
                 <Image source={require('../../assets/Token.png')} style={styles.tokenIcon} />
                 <Text style={styles.tokenText}>500</Text>
@@ -136,7 +137,7 @@ const Gacha = ({ navigation }) => {
         return (
           <View style={styles.content}>
             <Image source={require('../../assets/gacha.png')} style={styles.tierImage} />
-            <TouchableOpacity style={styles.tokenButton} onPress={() => handlePress(1000, 'Tier4')}>
+            <TouchableOpacity style={styles.tokenButton} onPress={() => handlePress(1000, 'tier4')}>
               <View style={styles.tokenContainer}>
                 <Image source={require('../../assets/Token.png')} style={styles.tokenIcon} />
                 <Text style={styles.tokenText}>1000</Text>
