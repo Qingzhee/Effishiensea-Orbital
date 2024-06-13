@@ -38,11 +38,18 @@ const fishDict = {
 
 export default function Aquarium({ navigation }) {
     const [fishData, setFishData] = useState([]);
-    const fishAnimValues = fishData.map(() => new Animated.ValueXY());
-    const insets = useSafeAreaInsets();
     const { width, height } = Dimensions.get('screen');
+    const insets = useSafeAreaInsets();
     const usableHeight = height - insets.top - insets.bottom;
     const usableWidth = width - insets.left - insets.right;
+
+    const fishAnimValues = fishData.map(() => {
+        return new Animated.ValueXY({
+            x: Math.random() * usableWidth * 0.8,
+            y: Math.random() * usableHeight * 0.6,
+        });
+    });
+
 
     /* Get the user's fish data from Firebase and stores fish types and number in fishData array
      */
@@ -52,8 +59,8 @@ export default function Aquarium({ navigation }) {
         const userRef = collection(FIREBASE_DB, 'Users');
         const q = query(userRef, where('email', '==', userEmail));
         const querySnapshot = await getDocs(q);
- 
-        //Stores the fish data of the user in the fishData array
+
+        //Stores the data of fish docs of the user in the fishData array
         if (!querySnapshot.empty) {
             const userDoc = doc(FIREBASE_DB, 'Users', querySnapshot.docs[0].id);
             const fishRef = collection(userDoc, 'Fishes');
@@ -64,14 +71,13 @@ export default function Aquarium({ navigation }) {
                 const fish = doc.data();
                 const fishUID = doc.id;
                 const fishNumber = fish.number;
-                fishes.push({uid: fishUID, type: fish.type, number: fishNumber});
+                fishes.push({ uid: fishUID, type: fish.type, tier: fish.tier });
             });
             setFishData(fishes);
         }
     };
 
-    /* Fetch the user's fish data by calling getFishes() each time the aquarium page is re-opened
-     */
+    //Fetch the user's fish data by calling getFishes() each time the aquarium page is re-opened
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             getFishes();
@@ -80,47 +86,53 @@ export default function Aquarium({ navigation }) {
     }, [navigation]
     );
 
-    /*Animation loop for fishes
-     *Whole animation is sequence from left to right rn, then loops
-     */
-     useEffect(() => {
-        console.log("width = " + usableWidth + ", height = " + usableHeight)
-        const animations = fishData.map((fish, index) => {
-            return Animated.loop(
-                Animated.sequence([
-                Animated.timing(fishAnimValues[index], {
-                    toValue: { x: Math.random() * usableWidth * 0.8, y: Math.random() * usableHeight * 0.7 },
-                    duration: 5000,
-                    useNativeDriver: true,
-                    easing: Easing.inOut(Easing.ease),
-                }),
-                Animated.timing(fishAnimValues[index], {
-                    toValue: 0,
-                    duration: 5000,
-                    useNativeDriver: true,
-                    easing: Easing.inOut(Easing.ease),
-                })
-            ])
-            );
+    //Animation loop for fishes
+    const animateAndLoop = (position, fishAnimValues, index) => {
+        const animation = animate(position, fishAnimValues, index);
+        animation.start(({ finished }) => {
+            if (finished) {
+                position = { x: Math.random() * usableWidth * 0.8, y: Math.random() * usableHeight * 0.6 };
+                animateAndLoop(position, fishAnimValues, index);
+            }
         });
-        Animated.parallel(animations).start();
-    }, [fishData]);
+    };
+
+    //Animates each fish from start to end point of one swim movement
+    const animate = (toPosition, fishAnimValues, index) => {
+        return Animated.sequence([
+            Animated.timing(fishAnimValues[index], {
+                toValue: toPosition,
+                duration: Math.random() * 2000 + 3000,
+                useNativeDriver: true,
+                easing: Easing.inOut(Easing.ease),
+            }),
+            Animated.delay(300),
+        ]);
+    };
+
+    //Starts the animations for all the fishes upon screen open
+    useEffect(() => {
+        const animations = fishData.map((fish, index) => {
+            let position = { x: Math.random() * usableWidth * 0.8, y: Math.random() * usableHeight * 0.6 };
+            return animateAndLoop(position, fishAnimValues, index);
+        });
+    });
 
     return (
         <ImageBackground source={background} style={styles.background}>
             <View>
                 <View>
                     {fishData.map((fishObj, index) => (
-                            <Animated.Image
-                                key={fishObj.uid}
-                                source={fishDict[fishObj.type]} 
-                                style={{
-                                    ...styles.fish, 
-                                    transform: fishAnimValues[index].getTranslateTransform()
-                                }} 
-                                resizeMode="contain"
-                            />
-                        )
+                        <Animated.Image
+                            key={fishObj.uid}
+                            source={fishDict[fishObj.type]}
+                            style={{
+                                ...styles[fishObj.tier],
+                                transform: fishAnimValues[index].getTranslateTransform()
+                            }}
+                            resizeMode="contain"
+                        />
+                    )
                     )}
                 </View>
             </View>
@@ -134,8 +146,23 @@ const styles = StyleSheet.create({
         height: '100%',
     },
 
-    fish: {
+    tier1: {
+        width: 40,
+        height: 40,
+    },
+
+    tier2: {
         width: 60,
         height: 60,
+    },
+
+    tier3: {
+        width: 80,
+        height: 80,
+    },
+
+    tier4: {
+        width: 100,
+        height: 100,
     }
 });
