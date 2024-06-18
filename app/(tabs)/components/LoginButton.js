@@ -1,26 +1,26 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import UserModel from './../Models/UserModel';
 
 export default function LoginButton({ navigation, email, password }) {
   const auth = FIREBASE_AUTH;
 
-  const signIn = async () => {
-    try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      navigation.navigate('Screens');
-    } catch (error) {
-      console.error(error);
-      alert("Sign in failed: " + error.message);
-    }
+  const signIn = (email, password) => {
+    UserModel.signIn(email, password)
+      .then(() => {
+        navigation.navigate('Screens');
+      }).catch((error) => {
+        console.error(error);
+        alert("Sign in failed: " + error.message);
+      });
   }
 
   return (
     <View style={styles.loginContainer}>
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={signIn}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => signIn(email, password)}>
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
     </View>

@@ -1,3 +1,41 @@
 //All interactions between the app and user document in Firebase should be done here
 //Create a new function for each interaction (e.g. updateTokens, update profile pic, update username, etc.)
 //Export the functions to the respective screens that use them 
+
+import { FIREBASE_DB, FIREBASE_AUTH } from './../../Firebase/FirebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { doc, setDoc, collection } from 'firebase/firestore';
+
+export default {
+    //Create Account 
+    signUp: async function (email, password, username) {
+        const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+        //Creates user document
+        const userRef = doc(FIREBASE_DB, 'Users', response.user.uid);
+        await setDoc(userRef, {
+            email: email,
+            username: username,
+            tokens: 0,
+            friends: [],
+            profilepicture: "https://firebasestorage.googleapis.com/v0/b/effishiensea.appspot.com/o/profilepictures%2FcSfuxJZ7LCcb0Y2IkVp2BbhCEDf2?alt=media&token=12d4dc6c-6ae5-4e52-a240-5e3a4705edff",
+        });
+
+        //Creates Fishes subcollection
+        const fishesRef = collection(userRef, 'Fishes');
+        const newFishDoc = doc(fishesRef);
+        await setDoc(newFishDoc, {
+            type: 'clownfish',
+            tier: 'tier1'
+        });
+    },
+
+    //Log In
+    signIn: async function (email, password) {
+        await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+    },
+
+    //Forget Password
+    changePw: async function (email) {
+        await sendPasswordResetEmail(FIREBASE_AUTH, email);
+    },
+}
