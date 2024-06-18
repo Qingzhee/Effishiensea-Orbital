@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import { FIREBASE_AUTH } from "../../Firebase/FirebaseConfig";
 import SuccessAlert from './SuccessAlert';
-import { sendPasswordResetEmail } from 'firebase/auth';
+import UserModel from './../Models/UserModel';
 
 export default function SendEmailButton({ navigation, email }) {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -15,7 +15,8 @@ export default function SendEmailButton({ navigation, email }) {
 
   const changePw = async () => {
     try {
-      await sendPasswordResetEmail(auth, email);
+      UserModel.changePw(email);
+      Keyboard.dismiss();
       setIsSuccess(true);
     } catch (error) {
       console.error(error);
