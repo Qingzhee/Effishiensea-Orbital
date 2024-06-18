@@ -4,7 +4,7 @@
 
 import { FIREBASE_DB, FIREBASE_AUTH } from './../../Firebase/FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { doc, setDoc, collection } from 'firebase/firestore';
+import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
 
 export default {
     //Create Account 
@@ -37,5 +37,17 @@ export default {
     //Forget Password
     changePw: async function (email) {
         await sendPasswordResetEmail(FIREBASE_AUTH, email);
+    },
+
+    //Fetch the current user's document
+    getUserDoc: async function() {
+        const userEmail = FIREBASE_AUTH.currentUser?.email;
+        const userRef = collection(FIREBASE_DB, 'Users');
+        const q = query(userRef, where('email', '==', userEmail));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+            return doc(FIREBASE_DB, 'Users', querySnapshot.docs[0].id);
+        }
+        return null;
     },
 }
