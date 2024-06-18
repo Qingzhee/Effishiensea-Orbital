@@ -1,2 +1,42 @@
-// View for friends page goes here
-// Then export FriendsPageView to FriendsPage.tsx
+import { View, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import FriendProfile from './components/FriendProfile';
+
+const FriendsPageView = ({ navigation, usernames, setFriendToAdd, addFriendToList }) => (
+    <View style={styles.container}>
+        <View style={styles.friendContainer}>
+            <TextInput
+                style={styles.addFriendBox}
+                placeholder="Enter your friend's username to add them."
+                onChangeText={setFriendToAdd} />
+            <Button title='Add Friend' onPress={addFriendToList} />
+        </View>
+        {usernames.map((username) =>
+            <TouchableOpacity>
+                <FriendProfile key={username} username={username} navigation={navigation} />
+            </TouchableOpacity>)}
+    </View>
+);
+
+export default FriendsPageView;
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#fff',
+        justifyContent: 'flex-start',
+    },
+    addFriendBox: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 8,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#000000',
+        width: '75%',
+    },
+    friendContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        margin: 5,
+    },
+});
