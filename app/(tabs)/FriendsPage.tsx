@@ -10,7 +10,7 @@ export default function Friends({ navigation }) {
     //Fetches friends list from database to update friends list array
     const fetchUsernames = async () => {
         const friendsArray = await FriendsModel.getUsernames();
-        console.log(friendsArray); 
+        console.log(friendsArray);
         setUsernames(friendsArray);
     };
 
@@ -21,10 +21,14 @@ export default function Friends({ navigation }) {
             alert("Please enter a username to add a friend.");
             return;
         } else {
-        FriendsModel.addFriend(friendToAdd);
-        fetchUsernames();
-        alert("Friend added!");
-        Keyboard.dismiss();
+            try {
+                await FriendsModel.addFriend(friendToAdd);
+                fetchUsernames();
+                alert("Friend added!");
+                Keyboard.dismiss();
+            } catch (error) {
+                alert(error.message);
+            }
         }
     };
 
@@ -38,10 +42,10 @@ export default function Friends({ navigation }) {
     );
 
     return (
-        <FriendsPageView 
-        navigation={navigation} 
-        usernames={usernames} 
-        setFriendToAdd={setFriendToAdd} 
-        addFriendToList={addFriendToList}/>
+        <FriendsPageView
+            navigation={navigation}
+            usernames={usernames}
+            setFriendToAdd={setFriendToAdd}
+            addFriendToList={addFriendToList} />
     );
 };

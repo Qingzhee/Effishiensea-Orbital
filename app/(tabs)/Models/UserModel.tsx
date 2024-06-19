@@ -50,4 +50,15 @@ export default {
         }
         return null;
     },
+
+    //Fetch a specific user document via username search
+    getUserDocByUsername: async function(username) {
+        const userRef = collection(FIREBASE_DB, 'Users');
+        const q = query(userRef, where('username', '==', username));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+            return doc(FIREBASE_DB, 'Users', querySnapshot.docs[0].id);
+        }
+        return null;
+    },
 }

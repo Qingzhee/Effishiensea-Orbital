@@ -1,5 +1,5 @@
 import UserModel from './UserModel';
-import { updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
+import { updateDoc, arrayUnion, getDoc, query, where } from 'firebase/firestore';
 
 export default {
     //Fetches the array field 'friends' from the user document
@@ -16,6 +16,16 @@ export default {
     //Adds a friend to the user's friends list
     addFriend: async function (friendToAdd: string) {
         const userDoc = await UserModel.getUserDoc();
-        updateDoc(userDoc, { friends: arrayUnion(friendToAdd) })
+        const friendDoc = await UserModel.getUserDocByUsername(friendToAdd);
+        if (friendDoc === null) {
+            throw new Error('There is no user with that username. Usernames are case-sensitive.');
+        }
+        await getDoc(friendDoc)    
+        .then((doc) => {
+                if (doc.id === userDoc.id) {
+                    throw new Error('You cannot add yourself as a friend. Are you that lonely.');
+                } 
+                updateDoc(userDoc, { friends: arrayUnion(doc.data().username) }); 
+            });
     },
 };
