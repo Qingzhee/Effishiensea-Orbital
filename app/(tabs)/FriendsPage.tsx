@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, TextInput } from 'react-native';
 import FriendsModel from './Models/FriendsModel';
 import FriendsPageView from './FriendsPageView';
 
 export default function Friends({ navigation }) {
-    const [usernames, setUsernames] = useState([]);
+    const [IDs, setIDs] = useState([]);
     const [friendToAdd, setFriendToAdd] = useState('');
 
     //Fetches friends list from database to update friends list array
     const fetchUsernames = async () => {
-        const friendsArray = await FriendsModel.getUsernames();
+        const friendsArray = await FriendsModel.getIDs();
         console.log(friendsArray);
-        setUsernames(friendsArray);
+        setIDs(friendsArray);
     };
 
     //Adds inputted friend to the user's friend list
@@ -25,6 +25,7 @@ export default function Friends({ navigation }) {
                 await FriendsModel.addFriend(friendToAdd);
                 fetchUsernames();
                 alert("Friend added!");
+                setFriendToAdd('');
                 Keyboard.dismiss();
             } catch (error) {
                 alert(error.message);
@@ -44,8 +45,9 @@ export default function Friends({ navigation }) {
     return (
         <FriendsPageView
             navigation={navigation}
-            usernames={usernames}
+            IDs={IDs}
             setFriendToAdd={setFriendToAdd}
+            friendToAdd={friendToAdd}
             addFriendToList={addFriendToList} />
     );
 };

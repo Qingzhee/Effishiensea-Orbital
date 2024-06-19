@@ -1,19 +1,20 @@
 import { View, ScrollView, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import FriendProfile from './components/FriendProfile';
 
-const FriendsPageView = ({ navigation, usernames, setFriendToAdd, addFriendToList }) => (
+const FriendsPageView = ({ navigation, IDs, setFriendToAdd, friendToAdd, addFriendToList }) => (
     <View style={styles.container}>
         <View style={styles.friendContainer}>
             <TextInput
                 style={styles.addFriendBox}
                 placeholder="Enter your friend's username to add them."
-                onChangeText={setFriendToAdd} />
+                onChangeText={setFriendToAdd}
+                value={friendToAdd} />
             <Button title='Add Friend' onPress={addFriendToList} />
         </View>
         <ScrollView>
-        {usernames.map((username) =>
-            <TouchableOpacity>
-                <FriendProfile key={username} username={username} navigation={navigation} />
+        {IDs.map((id) =>
+            <TouchableOpacity key={id}>
+                <FriendProfile id={id} navigation={navigation} />
             </TouchableOpacity>)}
         </ScrollView>
     </View>

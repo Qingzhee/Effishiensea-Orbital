@@ -4,7 +4,7 @@
 
 import { FIREBASE_DB, FIREBASE_AUTH } from './../../Firebase/FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, setDoc, collection, query, where, getDocs, getDoc } from 'firebase/firestore';
 
 export default {
     //Create Account 
@@ -61,4 +61,16 @@ export default {
         }
         return null;
     },
+
+    //Fetch a specific user document via unique Firebase ID
+    getUserDocById: async function(id) {
+        const userRef = doc(FIREBASE_DB, 'Users', id);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+            return userRef;
+        }
+        return null;
+    },
+
+
 }
