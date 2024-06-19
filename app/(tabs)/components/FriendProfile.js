@@ -5,7 +5,7 @@ import FriendsModel from './../Models/FriendsModel';
 export default function FriendProfile({ navigation, id }) {
     const [username, setUsername] = useState('');
     const [tokens, setTokens] = useState(0);
-    const [profilePic, setProfilePic] = useState('');
+
 
     //store the user doc of the friend in a const here
     useEffect(() => {
@@ -13,11 +13,8 @@ export default function FriendProfile({ navigation, id }) {
         const fetchUserData = async () => {
             const fetchedUsername = await FriendsModel.getUsernameFromId(id);
             const fetchedTokens = await FriendsModel.getTokensFromId(id);
-            const fetchedProfilePic = await FriendsModel.getPicFromId(id);
             setUsername(fetchedUsername);
             setTokens(fetchedTokens);
-            setProfilePic(fetchedProfilePic);
-            console.log("username: " + fetchedUsername + " tokens: " + fetchedTokens);
         };
         fetchUserData();
 

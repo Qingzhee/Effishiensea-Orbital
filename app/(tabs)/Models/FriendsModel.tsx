@@ -32,7 +32,7 @@ export default {
     //Fetch the username of a user from their ID
     getUsernameFromId: async function(id: string) {
         let name = 'placeholder';
-        const doc = await getDoc(await UserModel.getUserDocById(id))
+        await getDoc(await UserModel.getUserDocById(id))
         .then((doc) => {
             console.log("got username: " + doc.data().username);
             name = doc.data().username;
@@ -43,7 +43,7 @@ export default {
     //Fetch the tokens of a user from their ID
     getTokensFromId : async function(id: string) {
         let tokens = 0;
-        const doc = await getDoc(await UserModel.getUserDocById(id))
+        await getDoc(await UserModel.getUserDocById(id))
         .then((doc) => {
             tokens = doc.data().tokens;
         });
