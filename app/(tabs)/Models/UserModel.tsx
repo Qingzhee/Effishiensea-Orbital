@@ -4,7 +4,7 @@
 
 import { FIREBASE_DB, FIREBASE_AUTH } from './../../Firebase/FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, setDoc, collection, query, where, getDocs, updateDoc, increment } from 'firebase/firestore';
 
 export default {
     //Create Account 
@@ -50,4 +50,23 @@ export default {
         }
         return null;
     },
-}
+
+    // Update tokens
+    updateTokens: async function (time) {
+        const userEmail = FIREBASE_AUTH.currentUser?.email;
+        if (userEmail) {
+            const usersRef = collection(FIREBASE_DB, 'Users');
+            const q = query(usersRef, where('email', '==', userEmail));
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+                const userDoc = querySnapshot.docs[0]; // Assume there is only one document per user email
+                const userDocRef = doc(FIREBASE_DB, 'Users', userDoc.id);
+                await updateDoc(userDocRef, {
+                    tokens: increment(time)
+                });
+            } else {
+                throw new Error("No user document found.");
+            }
+        }
+    }
+};
