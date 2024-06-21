@@ -1,10 +1,8 @@
-//All interactions between the app and fishes subcollection in Firebase should be done here
-//Create a new function for each interaction 
-//Export the functions to the respective screens that use them 
 import UserModel from './UserModel';
 import { collection, getDocs } from 'firebase/firestore';
 
 export default {
+    // Fetches the user's collection of fish and returns it in an array
     getFishes: async function (): Promise<{ uid: string, type: string, tier: string }[]> {
         const userDoc = await UserModel.getUserDoc();
         let fishes = [];
