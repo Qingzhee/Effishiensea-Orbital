@@ -7,16 +7,14 @@ export default function Friends({ navigation }) {
     const [IDs, setIDs] = useState([]);
     const [friendToAdd, setFriendToAdd] = useState('');
 
-    //Fetches friends list from database to update friends list array
+    //Fetches friends list from database to update friends ID array
     const fetchUsernames = async () => {
         const friendsArray = await FriendsModel.getIDs();
-        console.log(friendsArray);
         setIDs(friendsArray);
     };
 
     //Adds inputted friend to the user's friend list
     const addFriendToList = async () => {
-        console.log(friendToAdd);
         if (friendToAdd == '') {
             alert("Please enter a username to add a friend.");
             return;

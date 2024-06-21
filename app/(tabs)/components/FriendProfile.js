@@ -5,16 +5,17 @@ import FriendsModel from './../Models/FriendsModel';
 export default function FriendProfile({ navigation, id }) {
     const [username, setUsername] = useState('');
     const [tokens, setTokens] = useState(0);
+    const [profilePic, setProfilePic] = useState(''); 
 
-
-    //store the user doc of the friend in a const here
+    //Update each friend's info to display in the friends list based on their id
     useEffect(() => {
-        console.log("the id is: " + id);
         const fetchUserData = async () => {
             const fetchedUsername = await FriendsModel.getUsernameFromId(id);
             const fetchedTokens = await FriendsModel.getTokensFromId(id);
+            const fetchedProfilePic = await FriendsModel.getProfilePicFromId(id);
             setUsername(fetchedUsername);
             setTokens(fetchedTokens);
+            setProfilePic(fetchedProfilePic);
         };
         fetchUserData();
 
@@ -22,7 +23,9 @@ export default function FriendProfile({ navigation, id }) {
 
     return (
         <View style={styles.container}>
-            <Image source={require('./../../../assets/profilepicstock.jpg')} style={styles.profilepic}/>
+            <Image 
+            source={ profilePic ? { uri: profilePic } : require('./../../../assets/profilepicstock.jpg') } 
+            style={styles.profilepic} />
             <View>
             <Text style={styles.profileDesc}>{username}</Text>
             <Text style={styles.tokens}>Tokens: {tokens}</Text>

@@ -1,3 +1,4 @@
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import UserModel from './UserModel';
 import { updateDoc, arrayUnion, getDoc, query, where } from 'firebase/firestore';
 
@@ -34,7 +35,6 @@ export default {
         let name = 'placeholder';
         await getDoc(await UserModel.getUserDocById(id))
         .then((doc) => {
-            console.log("got username: " + doc.data().username);
             name = doc.data().username;
         });
         return name;
@@ -48,5 +48,15 @@ export default {
             tokens = doc.data().tokens;
         });
         return tokens;
+    },
+
+    //Fetch profile picture link of a user from their ID
+    getProfilePicFromId: async function(id: string) {
+        let link = '';
+        await getDoc(await UserModel.getUserDocById(id))
+        .then((doc) => {
+            link = doc.data().profilepicture;
+        });
+        return link;
     },
 };
