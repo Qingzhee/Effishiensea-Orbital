@@ -4,7 +4,8 @@
 
 import { FIREBASE_DB, FIREBASE_AUTH } from './../../Firebase/FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { doc, setDoc, collection, query, where, getDocs, updateDoc, increment, addDoc } from 'firebase/firestore';
+import { doc, setDoc, collection, query, where, getDocs, updateDoc, increment, addDoc, getDoc } from 'firebase/firestore';
+
 
 export default {
     // Create Account 
@@ -51,6 +52,27 @@ export default {
         return null;
     },
 
+
+    //Fetch a specific user document via username search
+    getUserDocByUsername: async function(username) {
+        const userRef = collection(FIREBASE_DB, 'Users');
+        const q = query(userRef, where('username', '==', username));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+            return doc(FIREBASE_DB, 'Users', querySnapshot.docs[0].id);
+        }
+        return null;
+    },
+
+    //Fetch a specific user document via unique Firebase ID
+    getUserDocById: async function(id) {
+        const userRef = doc(FIREBASE_DB, 'Users', id);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+            return userRef;
+        }
+    },
+
     // Fetch the current user's tokens
     fetchTokens: async function(userEmail) {
         const userQuery = query(collection(FIREBASE_DB, 'Users'), where('email', '==', userEmail));
@@ -65,7 +87,7 @@ export default {
         }
         return null;
     },
-
+      
     // Update tokens and add fish
     updateTokensAndAddFish: async function(userDocId, newTokens, newFish) {
         const userDocRef = doc(FIREBASE_DB, 'Users', userDocId);
