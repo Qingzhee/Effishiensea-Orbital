@@ -11,9 +11,20 @@ import Aquarium from "./app/(tabs)/Aquarium";
 import Friends from "./app/(tabs)/FriendsPage";
 import Settings from './app/(tabs)/SettingsPage';
 import Gacha from './app/(tabs)/Gacha';
+import FriendsAquarium from './app/(tabs)/FriendsAquarium';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const FriendsStack = createNativeStackNavigator();
+
+function FriendsStackNavigator() {
+  return (
+    <FriendsStack.Navigator>
+      <FriendsStack.Screen name="FriendsMain" component={Friends} options={{headerShown: false}}/>
+      <FriendsStack.Screen name="FriendsAquarium" component={FriendsAquarium} options={{headerShown: false}}/>
+    </FriendsStack.Navigator>
+  );
+}
 
 function ScreensDrawer() {
   return (
@@ -21,7 +32,7 @@ function ScreensDrawer() {
       <Drawer.Screen name="Home" component={HomePage} />
       <Drawer.Screen name="Aquarium" component={Aquarium}/>
       <Drawer.Screen name="Gacha" component={Gacha} />  
-      <Drawer.Screen name="Friends" component={Friends} />
+      <Drawer.Screen name="Friends" component={FriendsStackNavigator} options={{unmountOnBlur: true}}/>
       <Drawer.Screen name="Settings" component={Settings} />
     </Drawer.Navigator>
   );

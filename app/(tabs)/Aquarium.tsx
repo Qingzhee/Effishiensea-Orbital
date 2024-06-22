@@ -10,7 +10,6 @@ export default function Aquarium({ navigation }) {
     const { width, height } = Dimensions.get('screen');
     const insets = useSafeAreaInsets();
 
-    // For some reason the screen height in pixels ranges from ~400 (bottom) to ~400 (top)
     const usableHeight = height - insets.top - insets.bottom;
     const usableWidth = width - insets.left - insets.right;
 
@@ -30,8 +29,6 @@ export default function Aquarium({ navigation }) {
         let yValue = (fish.type == 'lobster' || fish.type == 'spidercrab')
                     ? 800
                     : Math.random() * usableHeight * 0.7 + 100;
-
-        console.log("type: " + fish.type + " x: " + xValue + " y: " + yValue);
         return new Animated.ValueXY({
             x: xValue,
             y: yValue,

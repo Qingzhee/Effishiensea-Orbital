@@ -13,7 +13,7 @@ const FriendsPageView = ({ navigation, IDs, setFriendToAdd, friendToAdd, addFrie
         </View>
         <ScrollView>
         {IDs.map((id) =>
-            <TouchableOpacity key={id}>
+            <TouchableOpacity key={id} onPress={() => navigation.navigate("FriendsAquarium", { friendId: id })}>
                 <FriendProfile id={id} navigation={navigation} />
             </TouchableOpacity>)}
         </ScrollView>
