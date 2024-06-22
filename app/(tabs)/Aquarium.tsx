@@ -27,12 +27,10 @@ export default function Aquarium({ navigation }) {
     //Initializes the starting position of each fish
     const fishAnimValues = fishData.map((fish) => {
         let xValue = Math.random() * usableWidth * 0.8;
-        let yValue = (fish.type == 'lobster')
-                    ? 300
-                    : Math.random() * usableHeight * 0.2;
-        if (fish.type == 'spidercrab') {
-            yValue = 700;
-        }
+        let yValue = (fish.type == 'lobster' || fish.type == 'spidercrab')
+                    ? 800
+                    : Math.random() * usableHeight * 0.7 + 100;
+
         console.log("type: " + fish.type + " x: " + xValue + " y: " + yValue);
         return new Animated.ValueXY({
             x: xValue,
@@ -56,11 +54,9 @@ export default function Aquarium({ navigation }) {
             if (finished) {
                 position = { 
                     x: Math.random() * usableWidth * 0.5, 
-                    y: (type =='lobster') 
-                        ? Math.random() * 50 + 270 
-                        : type == 'spidercrab'
-                            ? Math.random() * 50 + 670
-                            : Math.random() * usableHeight * 0.2 };
+                    y: (type =='lobster' || type == 'spidercrab') 
+                        ? Math.random() * 50 + 770 
+                        : Math.random() * usableHeight * 0.7 + 100 };
                 animateAndLoop(position, fishAnimValues, index, type);
             }
         });
@@ -83,11 +79,9 @@ export default function Aquarium({ navigation }) {
     useEffect(() => {
         const animations = fishData.map((data, index) => {
             let xValue = Math.random() * usableWidth * 0.5;
-            let yValue = (data.type == 'lobster') 
-                        ? 270 
-                        : data.type == 'spidercrab'
-                            ? 670
-                            : Math.random() * usableHeight * 0.2;
+            let yValue = (data.type == 'lobster' || data.type == 'spidercrab') 
+                        ? 800 
+                        : Math.random() * usableHeight * 0.7 + 100;
             let position = { x: xValue, y: yValue };
             return animateAndLoop(position, fishAnimValues, index, data.type);
         });
