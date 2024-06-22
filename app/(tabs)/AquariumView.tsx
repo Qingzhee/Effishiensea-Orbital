@@ -35,7 +35,7 @@ const fishDict = {
 const AquariumView = ({ fishData, fishAnimValues }) => (
     <ImageBackground source={background} style={styles.background}>
         <View>
-            <View>
+            <View style={{ justifyContent: 'space-evenly', flex: 1 }}> 
                 {fishData.map((fishObj, index) => (
                     <Animated.Image
                         key={fishObj.uid}
