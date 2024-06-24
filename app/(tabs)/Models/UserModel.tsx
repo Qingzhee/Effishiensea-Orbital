@@ -97,5 +97,13 @@ export default {
 
         const fishesCollectionRef = collection(userDocRef, 'Fishes');
         await addDoc(fishesCollectionRef, newFish);
-    }
+    },
+
+    // Update tokens
+    updateTokens: async function(userDoc, newTokens) {
+        const userDocRef = doc(FIREBASE_DB, 'Users', userDoc);
+        await updateDoc(userDocRef, {
+            tokens: increment(newTokens)
+        });
+    },
 };

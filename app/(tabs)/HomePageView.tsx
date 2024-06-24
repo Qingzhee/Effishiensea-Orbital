@@ -2,9 +2,14 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 
-const HomePageView = ({ time, timeLeft, hasStarted, isRunning, handleStart, handleStop, setTime, formatTime }) => {
+const HomePageView = ({ time, timeLeft, hasStarted, isRunning, handleStart, handleStop, setTime, formatTime, tokens }) => {
     return (
         <View style={styles.container}>
+            <View style={styles.topContainer}>
+            <Text style={styles.tokensLabel}>Tokens: </Text>
+            <Image source={require('../../assets/Token.png')} style={styles.tokenIconTop} />
+            <Text style={styles.tokens}>{tokens}</Text>
+        </View>
             <Text style={styles.welcomeText}>
                 {hasStarted ? 'Focus Session in Progress!' : 'Start your focus session!'}
             </Text>
@@ -109,6 +114,29 @@ const styles = StyleSheet.create({
         color: '#1067c8',
         fontWeight: 'bold',
     },
+    topContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        width: '100%',
+        padding: 20,
+        position: 'absolute',
+        top: 0,
+        right: 0,
+      },
+      tokensLabel: {
+        fontSize: 20,
+      },
+      tokenIconTop: {
+        width: 40,
+        height: 40,
+        marginLeft: 5,
+        marginTop: 5,
+      },
+      tokens: {
+        fontSize: 20,
+        marginLeft: 5,
+      },
 });
 
 export default HomePageView;

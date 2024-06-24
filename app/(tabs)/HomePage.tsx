@@ -2,13 +2,45 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Alert } from 'react-native';
 import HomePageView from './HomePageView';
 import UserModel from './Models/UserModel';
+import { FIREBASE_AUTH } from './../Firebase/FirebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useFocusEffect } from '@react-navigation/native';
 
 const HomePageController = () => {
     const [time, setTime] = useState<number>(10); // default 10 minutes
     const [timeLeft, setTimeLeft] = useState<number>(time * 60); // time in seconds
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const [hasStarted, setHasStarted] = useState<boolean>(false);
+    const [tokens, setTokens] = useState(0);
+    const [userDocId, setUserDocId] = useState(null);
+    const [userEmail, setUserEmail] = useState(null);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
+          if (user) {
+            setUserEmail(user.email);
+          }
+        });
+    
+        return () => unsubscribe();
+      }, []);
+    
+      useFocusEffect(
+        React.useCallback(() => {
+          const fetchTokens = async () => {
+            if (userEmail) {
+              const userData = await UserModel.fetchTokens(userEmail);
+              if (userData) {
+                setTokens(userData.tokens);
+                setUserDocId(userData.userDocId);
+              }
+            }
+          };
+    
+          fetchTokens();
+        }, [userEmail])
+      );
 
     const formatTime = (seconds: number): string => {
         const hrs = Math.floor(seconds / 3600);
@@ -25,7 +57,7 @@ const HomePageController = () => {
                 if (prevTimeLeft <= 1) {
                     clearInterval(timerRef.current!);
                     // Update Firebase with the number of tokens
-                    UserModel.updateTokens(time)
+                    UserModel.updateTokens(userDocId, time)
                         .then(() => {
                             Alert.alert(
                                 "Congratulations!",
@@ -104,6 +136,7 @@ const HomePageController = () => {
             handleStop={handleStop}
             setTime={setTime}
             formatTime={formatTime}
+            tokens={tokens}
         />
     );
 };
