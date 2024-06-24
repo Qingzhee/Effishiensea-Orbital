@@ -1,4 +1,3 @@
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import UserModel from './UserModel';
 import { updateDoc, arrayUnion, getDoc, query, where } from 'firebase/firestore';
 

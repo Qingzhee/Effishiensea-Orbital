@@ -11,7 +11,7 @@ const FriendsPageView = ({ navigation, IDs, setFriendToAdd, friendToAdd, addFrie
                 value={friendToAdd} />
             <Button title='Add Friend' onPress={addFriendToList} />
         </View>
-        <ScrollView>
+        <ScrollView style={styles.friendsList}>
         {IDs.map((id) =>
             <TouchableOpacity key={id} onPress={() => navigation.navigate("FriendsAquarium", { friendId: id })}>
                 <FriendProfile id={id} navigation={navigation} />
@@ -42,4 +42,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 5,
     },
+
+    friendsList: {
+        height: '100%',
+    }
 });
