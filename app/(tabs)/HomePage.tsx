@@ -84,7 +84,7 @@ const HomePageController = () => {
                 }
                 return prevTimeLeft - 1; // Decrement by 60 seconds each interval
             });
-        }, 10); // Set interval to 1 second (smaller faster)
+        }, 1000); // Set interval to 1 second (smaller faster)
     };
 
     const handleStop = () => {

@@ -26,13 +26,15 @@ const CreateAccountView = ({
       <EmailTextbox email={email} setEmail={setEmail} />
       <UsernameTextbox username={username} setUsername={setUsername} />
       <PwTextbox password={password} setPassword={setPassword} />
-      {isSuccess ? (
-        <SuccessAlert onContinue={handleContinue} message="Congratulations, your account has been successfully created." />
-      ) : (
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-      )}
+      <View style={styles.loginContainer}>
+        {isSuccess ? (
+          <SuccessAlert onContinue={handleContinue} message="Congratulations, your account has been successfully created." />
+        ) : (
+          <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <Text style={styles.text1}>OR</Text>
       <Text>Already have an Account? <LogIn navigation={navigation} /> </Text>
       <ForgotYourPassword navigation={navigation} />
@@ -70,6 +72,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  loginContainer: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center', 
   },
 });
 
