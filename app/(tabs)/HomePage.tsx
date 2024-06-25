@@ -59,6 +59,7 @@ const HomePageController = () => {
                     // Update Firebase with the number of tokens
                     UserModel.updateTokens(userDocId, time)
                         .then(() => {
+                            setTokens((prevTokens) => prevTokens + time);
                             Alert.alert(
                                 "Congratulations!",
                                 "You've completed your focus session and earned tokens!",
@@ -83,7 +84,7 @@ const HomePageController = () => {
                 }
                 return prevTimeLeft - 1; // Decrement by 60 seconds each interval
             });
-        }, 1000); // Set interval to 1 second (smaller faster)
+        }, 10); // Set interval to 1 second (smaller faster)
     };
 
     const handleStop = () => {
