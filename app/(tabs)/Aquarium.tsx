@@ -10,7 +10,6 @@ export default function Aquarium({ navigation }) {
     const { width, height } = Dimensions.get('screen');
     const insets = useSafeAreaInsets();
 
-    // For some reason the screen height in pixels ranges from ~400 (bottom) to ~400 (top)
     const usableHeight = height - insets.top - insets.bottom;
     const usableWidth = width - insets.left - insets.right;
 
@@ -30,8 +29,6 @@ export default function Aquarium({ navigation }) {
         let yValue = (fish.type == 'lobster' || fish.type == 'spidercrab')
                     ? 800
                     : Math.random() * usableHeight * 0.7 + 100;
-
-        console.log("type: " + fish.type + " x: " + xValue + " y: " + yValue);
         return new Animated.ValueXY({
             x: xValue,
             y: yValue,
@@ -56,7 +53,7 @@ export default function Aquarium({ navigation }) {
                     x: Math.random() * usableWidth * 0.5, 
                     y: (type =='lobster' || type == 'spidercrab') 
                         ? Math.random() * 50 + 770 
-                        : Math.random() * usableHeight * 0.7 + 100 };
+                        : Math.random() * usableHeight * 0.7 + 150 };
                 animateAndLoop(position, fishAnimValues, index, type);
             }
         });
@@ -81,7 +78,7 @@ export default function Aquarium({ navigation }) {
             let xValue = Math.random() * usableWidth * 0.5;
             let yValue = (data.type == 'lobster' || data.type == 'spidercrab') 
                         ? 800 
-                        : Math.random() * usableHeight * 0.7 + 100;
+                        : Math.random() * usableHeight * 0.7 + 150;
             let position = { x: xValue, y: yValue };
             return animateAndLoop(position, fishAnimValues, index, data.type);
         });
