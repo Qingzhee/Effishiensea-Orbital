@@ -41,14 +41,16 @@ export default function Settings() {
   const requestPermission = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permission to access gallery is required!');
+      Alert.alert('Permission to access gallery is required!!!!');
     }
   };
 
   const handlePickImage = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync(true);
     if (permissionResult.granted === false) {
       Alert.alert('Permission to access gallery is required!');
+  
+      permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
       return;
     }
 
