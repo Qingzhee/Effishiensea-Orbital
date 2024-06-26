@@ -1,5 +1,6 @@
 import { View, ScrollView, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import FriendProfile from './components/FriendProfile';
+import React from 'react';
 
 const FriendsPageView = ({ navigation, IDs, setFriendToAdd, friendToAdd, addFriendToList }) => (
     <View style={styles.container}>

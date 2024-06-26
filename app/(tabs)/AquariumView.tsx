@@ -1,3 +1,4 @@
+import React from 'react';
 import { View, ImageBackground, Animated, StyleSheet } from 'react-native';
 
 const background = require('./../../assets/aquariumbg.webp');
