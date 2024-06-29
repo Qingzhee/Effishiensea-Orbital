@@ -18,10 +18,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/Logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.aldentantan.Effishiensea"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c54330b4-b57a-4d4f-8333-f04dce55629f"
+      }
+    },
+    "owner": "aldentantan"
   }
 }
