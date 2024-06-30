@@ -10,6 +10,10 @@ import { doc, setDoc, collection, query, where, getDocs, updateDoc, increment, a
 export default {
     // Create Account 
     signUp: async function (email, password, username) {
+        if (typeof email !== 'string' || typeof password !== 'string' || typeof username!== 'string' 
+            || username === null || username === '') {
+            return null;
+        }
         const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
         // Creates user document
         const userRef = doc(FIREBASE_DB, 'Users', response.user.uid);
@@ -32,11 +36,17 @@ export default {
 
     // Log In
     signIn: async function (email, password) {
+        if (typeof email !== 'string' || typeof password !== 'string') {
+            return null;
+        }
         await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
     },
 
     // Forget Password
     changePw: async function (email) {
+        if (typeof email !== 'string') {
+            return null;
+        }
         await sendPasswordResetEmail(FIREBASE_AUTH, email);
     },
 
@@ -75,6 +85,9 @@ export default {
 
     // Fetch the current user's tokens
     fetchTokens: async function(userEmail) {
+        if (typeof userEmail !== 'string') {
+            return null;
+        }
         const userQuery = query(collection(FIREBASE_DB, 'Users'), where('email', '==', userEmail));
         const userQuerySnapshot = await getDocs(userQuery);
 
@@ -88,8 +101,11 @@ export default {
         return null;
     },
       
-    // Update tokens and add fish
-    updateTokensAndAddFish: async function(userDocId, newTokens, newFish) {
+    // Update tokens and add fish. newFish is an object with type and tier fields
+    updateTokensAndAddFish: async function(userDocId: string, newTokens: number, newFish) {
+        if (typeof userDocId !== 'string' || typeof newTokens !== 'number' || typeof newFish !== 'object') {
+            return null;
+        }
         const userDocRef = doc(FIREBASE_DB, 'Users', userDocId);
         await updateDoc(userDocRef, {
             tokens: newTokens,
@@ -100,7 +116,10 @@ export default {
     },
 
     // Update tokens
-    updateTokens: async function(userDoc, newTokens) {
+    updateTokens: async function(userDoc: string, newTokens: number) {
+        if (typeof userDoc !== 'string' || typeof newTokens !== 'number') {
+            return null;
+        }
         const userDocRef = doc(FIREBASE_DB, 'Users', userDoc);
         await updateDoc(userDocRef, {
             tokens: increment(newTokens)

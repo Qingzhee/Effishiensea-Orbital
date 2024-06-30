@@ -8,7 +8,7 @@ import CreateAccount from './components/CreateAccount';
 import ForgotYourPassword from './components/ForgotYourPassword';
 const logoImg = require('../../assets/Logo.png');
 
-const LoginView = ({ email, setEmail, password, setPassword, navigation }) => {
+const LoginView = ({ email, setEmail, password, setPassword, navigation, signIn }) => {
   return (
     <View style={styles.container}>
       <Image source={logoImg} style={styles.logo} />
@@ -17,7 +17,7 @@ const LoginView = ({ email, setEmail, password, setPassword, navigation }) => {
       <EmailTextbox email={email} setEmail={setEmail} />
       <PwTextbox password={password} setPassword={setPassword}/>
       <RememberMe/>
-      <LoginButton navigation={navigation} email={email} password={password} />
+      <LoginButton navigation={navigation} signIn={signIn} />
       <Text style={styles.login}>OR</Text>
       <Text>Don't have an Account? <CreateAccount navigation={navigation}/> </Text>
       <ForgotYourPassword navigation={navigation} />
