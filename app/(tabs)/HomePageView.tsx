@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 
-const HomePageView = ({ time, timeLeft, hasStarted, isRunning, handleStart, handleStop, setTime, formatTime, tokens }) => {
+const HomePageView = ({ time, timeLeft, hasStarted, isRunning, handleStart, handleStop, setTime, formatTime, tokens, TIMER_MULTIPLIER }) => {
     return (
         <View style={styles.container}>
             <View style={styles.topContainer}>
@@ -19,7 +19,7 @@ const HomePageView = ({ time, timeLeft, hasStarted, isRunning, handleStart, hand
                 <Text style={styles.timer}>{formatTime(timeLeft)}</Text>
                 <View style={styles.tokenContainer}>
                     <Image source={require('../../assets/Token.png')} style={styles.tokenIcon} />
-                    <Text style={styles.tokenText}>{time} Tokens</Text>
+                    <Text style={styles.tokenText}>{time * TIMER_MULTIPLIER} Tokens</Text>
                 </View>
                 {!hasStarted && (
                     <Slider
