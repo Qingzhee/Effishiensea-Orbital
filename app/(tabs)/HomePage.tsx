@@ -15,6 +15,7 @@ const HomePageController = () => {
     const [userDocId, setUserDocId] = useState(null);
     const [userEmail, setUserEmail] = useState(null);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const TIMER_MULTIPLIER = 100;
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
@@ -57,7 +58,7 @@ const HomePageController = () => {
                 if (prevTimeLeft <= 1) {
                     clearInterval(timerRef.current!);
                     // Update Firebase with the number of tokens
-                    UserModel.updateTokens(userDocId, time)
+                    UserModel.updateTokens(userDocId, time * TIMER_MULTIPLIER)
                         .then(() => {
                             setTokens((prevTokens) => prevTokens + time);
                             Alert.alert(
@@ -84,7 +85,7 @@ const HomePageController = () => {
                 }
                 return prevTimeLeft - 1; // Decrement by 60 seconds each interval
             });
-        }, 1000); // Set interval to 1 second (smaller faster)
+        }, 1); // Set interval to 1 second (smaller faster)
     };
 
     const handleStop = () => {
