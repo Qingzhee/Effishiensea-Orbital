@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, Image } from 'react-native';
 import EmailTextbox from './components/EmailTextbox';
 import PwTextbox from './components/PwTextbox';
 import LoginButton from './components/LoginButton';
-import RememberMe from './components/RememberMe';
 import CreateAccount from './components/CreateAccount';
 import ForgotYourPassword from './components/ForgotYourPassword';
 const logoImg = require('../../assets/Logo.png');
@@ -16,7 +15,6 @@ const LoginView = ({ email, setEmail, password, setPassword, navigation, signIn 
       <Text style={styles.login}>Log into your account</Text>
       <EmailTextbox email={email} setEmail={setEmail} />
       <PwTextbox password={password} setPassword={setPassword}/>
-      <RememberMe/>
       <LoginButton navigation={navigation} signIn={signIn} />
       <Text style={styles.login}>OR</Text>
       <Text>Don't have an Account? <CreateAccount navigation={navigation}/> </Text>
